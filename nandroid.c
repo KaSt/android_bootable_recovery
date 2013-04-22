@@ -366,7 +366,7 @@ int nandroid_backup(const char* backup_path)
             return ret;
     }
 
-     if (is_data_media() || 0 != stat("/sdcard/.android_secure", &s)) {
+     if (is_data_media() || 0 != stat("/sdcard/.android_secure", &s)) 
     {
         ui_print("No /sdcard/.android_secure found. Skipping backup of applications on external storage.\n");
     }

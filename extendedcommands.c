@@ -1266,8 +1266,7 @@ void show_advanced_menu()
                                 NULL
     };
 
-    static char* list[] = { "reboot recovery",
-                            "wipe dalvik cache",
+    static char* list[] = { "wipe dalvik cache",
                             "wipe battery stats",
                             "report error",
                             "key test",
@@ -1297,9 +1296,6 @@ void show_advanced_menu()
         switch (chosen_item)
         {
             case 0:
-                android_reboot(ANDROID_RB_RESTART2, 0, "recovery");
-                break;
-            case 1:
                 if (0 != ensure_path_mounted("/data"))
                     break;
                 ensure_path_mounted("/sd-ext");
@@ -1312,14 +1308,14 @@ void show_advanced_menu()
                 }
                 ensure_path_unmounted("/data");
                 break;
-            case 2:
+            case 1:
                 if (confirm_selection( "Confirm wipe?", "Yes - Wipe Battery Stats"))
                     wipe_battery_stats();
                 break;
-            case 3:
+            case 2:
                 handle_failure(1);
                 break;
-            case 4:
+            case 3:
             {
                 ui_print("Outputting key codes.\n");
                 ui_print("Go back to end debugging.\n");
@@ -1334,28 +1330,68 @@ void show_advanced_menu()
                 while (action != GO_BACK);
                 break;
             }
-            case 5:
+            case 4:
                 ui_printlogtail(12);
                 break;
-            case 6:
+            case 5:
                 ensure_path_mounted("/system");
                 ensure_path_mounted("/data");
                 ui_print("Fixing permissions...\n");
                 __system("fix_permissions");
                 ui_print("Done!\n");
                 break;
-            case 7:
+            case 6:
                 partition_sdcard("/sdcard");
                 break;
-            case 8:
+            case 7:
                 partition_sdcard("/external_sd");
                 break;
-            case 9:
+            case 8:
                 partition_sdcard("/emmc");
                 break;
         }
     }
 }
+
+
+void show_power_menu()
+{
+
+    static char* headers[] = {  "Power Menu",
+                                "",
+                                NULL
+    };
+
+    static char* list[] = { "Reboot System",
+                            "Reboot to Recovery",
+                            "Reboot to Fastboot",
+                            NULL
+    };
+
+    for (;;)
+    {
+        int chosen_item = get_filtered_menu_selection(headers, list, 0, 0, sizeof(list) / sizeof(char*));
+        if (chosen_item == GO_BACK)
+            break;
+        switch (chosen_item)
+        {
+            case 0:
+                ui_print("Rebooting System...\n");
+		android_reboot(ANDROID_RB_RESTART, 0, "");
+                break;
+            case 1:
+                ui_print("Rebooting Into Recovery...\n");
+		android_reboot(ANDROID_RB_RESTART2, 0, "recovery");
+                break;
+	    case 2:
+		ui_print("Rebooting Into Fastboot Mode...\n");
+        	android_reboot(ANDROID_RB_RESTART2, 0, "bootloader");
+        	break;
+
+	}
+    }	
+}
+
 
 void write_fstab_root(char *path, FILE *file)
 {

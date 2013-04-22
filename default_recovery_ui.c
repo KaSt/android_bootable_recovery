@@ -22,15 +22,13 @@
 
 char* MENU_HEADERS[] = { NULL };
 
-char* MENU_ITEMS[] = { "Reboot System Now",
-                       "Install Zip From SdCard",
+char* MENU_ITEMS[] = { "Install Zip From SdCard",
                        "Wipe Data/Factory Reset",
                        "Wipe Cache Partition",
                        "Backup And Restore",
                        "Mounts And Storage",
                        "Advanced",
-		       "Shutdown System",
-		       "Reboot to Fastboot Mode",
+		       "Reboot or Shutdown",
                        NULL };
 
 void device_ui_init(UIParameters* ui_parameters) {
