@@ -1020,7 +1020,8 @@ static void choose_backup_format() {
     };
 
     char* list[] = { "tar (default)",
-        "dup"
+        "dup",
+	NULL
     };
 
     int chosen_item = get_menu_selection(headers, list, 0, 0);
