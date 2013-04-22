@@ -62,6 +62,7 @@ static const char *CACHE_ROOT = "/cache";
 static const char *SDCARD_ROOT = "/sdcard";
 static int allow_display_toggle = 0;
 static int poweroff = 0;
+static int fastboot = 0;
 static const char *SDCARD_PACKAGE_FILE = "/sdcard/update.zip";
 static const char *TEMPORARY_LOG_FILE = "/tmp/recovery.log";
 static const char *SIDELOAD_TEMP_DIR = "/tmp/sideload";
@@ -733,6 +734,9 @@ prompt_and_wait() {
             case ITEM_POWEROFF:
                 poweroff = 1;
                 return;
+	    case ITEM_FASTBOOT:
+	        fastboot = 1;
+                return;
         }
     }
 }
@@ -914,6 +918,13 @@ main(int argc, char **argv) {
     finish_recovery(send_intent);
 
     sync();
+
+    if(!fastboot) {
+        ui_print("Rebooting Into Fastboot Mode...\n");
+	android_reboot(ANDROID_RB_RESTART2, 0, "bootloader");
+	return EXIT_SUCCESS;
+    }
+
     if(!poweroff) {
         ui_print("Rebooting...\n");
         android_reboot(ANDROID_RB_RESTART, 0, 0);

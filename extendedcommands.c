@@ -1019,19 +1019,19 @@ static void choose_backup_format() {
                                 NULL
     };
 
-    char* list[] = { "dup (default)",
-        "tar"
+    char* list[] = { "tar (default)",
+        "dup"
     };
 
     int chosen_item = get_menu_selection(headers, list, 0, 0);
     switch (chosen_item) {
         case 0:
+	    write_string_to_file(NANDROID_BACKUP_FORMAT_FILE, "tar");
+            ui_print("Backup format set to tar.\n");
+	    break;
+	case 1:
             write_string_to_file(NANDROID_BACKUP_FORMAT_FILE, "dup");
             ui_print("Backup format set to dedupe.\n");
-            break;
-        case 1:
-            write_string_to_file(NANDROID_BACKUP_FORMAT_FILE, "tar");
-            ui_print("Backup format set to tar.\n");
             break;
     }
 }
@@ -1043,12 +1043,12 @@ void show_nandroid_menu()
                                 NULL
     };
 
-    char* list[] = { "backup",
-                            "restore",
-                            "delete",
-                            "advanced restore",
-                            "free unused backup data",
-                            "choose backup format",
+    char* list[] = { "Backup",
+                            "Restore",
+                            "Delete",
+                            "Advanced Restore",
+                            "Free Unused Backup Data",
+                            "Choose Backup Format",
                             NULL,
                             NULL,
                             NULL,
@@ -1061,17 +1061,17 @@ void show_nandroid_menu()
     char *other_sd = NULL;
     if (volume_for_path("/emmc") != NULL) {
         other_sd = "/emmc";
-        list[6] = "backup to internal sdcard";
-        list[7] = "restore from internal sdcard";
-        list[8] = "advanced restore from internal sdcard";
-        list[9] = "delete from internal sdcard";
+        list[6] = "Backup to internal sdcard";
+        list[7] = "Restore from internal sdcard";
+        list[8] = "Advanced restore from internal sdcard";
+        list[9] = "Delete from internal sdcard";
     }
     else if (volume_for_path("/external_sd") != NULL) {
         other_sd = "/external_sd";
-        list[6] = "backup to external sdcard";
-        list[7] = "restore from external sdcard";
-        list[8] = "advanced restore from external sdcard";
-        list[9] = "delete from external sdcard";
+        list[6] = "Backup to external sdcard";
+        list[7] = "Restore from external sdcard";
+        list[8] = "Advanced restore from external sdcard";
+        list[9] = "Delete from external sdcard";
     }
 #ifdef RECOVERY_EXTEND_NANDROID_MENU
     extend_nandroid_menu(list, 10, sizeof(list) / sizeof(char*));
