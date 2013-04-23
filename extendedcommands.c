@@ -1357,7 +1357,7 @@ void show_advanced_menu()
 void show_power_menu()
 {
 
-    static char* headers[] = {  "Power Menu",
+    static char* headers[] = {  "Reboot or Shutdown",
                                 "",
                                 NULL
     };
@@ -1365,6 +1365,7 @@ void show_power_menu()
     static char* list[] = { "Reboot System",
                             "Reboot to Recovery",
                             "Reboot to Fastboot",
+			    "Shutdown",
                             NULL
     };
 
@@ -1377,17 +1378,23 @@ void show_power_menu()
         {
             case 0:
                 ui_print("Rebooting System...\n");
-		android_reboot(ANDROID_RB_RESTART, 0, "");
+		android_reboot(ANDROID_RB_RESTART, 0, 0);
                 break;
+
             case 1:
                 ui_print("Rebooting Into Recovery...\n");
 		android_reboot(ANDROID_RB_RESTART2, 0, "recovery");
                 break;
+
 	    case 2:
 		ui_print("Rebooting Into Fastboot Mode...\n");
         	android_reboot(ANDROID_RB_RESTART2, 0, "bootloader");
         	break;
 
+	    case 3:
+		ui_print("Shutting down...\n");
+        	android_reboot(ANDROID_RB_POWEROFF, 0, 0);
+		break;
 	}
     }	
 }
